@@ -14,8 +14,11 @@ char - 2 byte
 
 boolean - true or false
 
+These primitives also have their own classes -wrappers- such as Long, Byte as well as their own methods. (Take care the first letters beign upper case.)
+
 String is the class name so the first letter is uppercase
 ```
+
 
 A variable should be initialised to be used it the code,  only declaring is not enough
 
@@ -23,7 +26,46 @@ Variable name should start with alphabet or _ or $
 
 camelCase is the common usage.
 
-Type casting is the same as C.
+### Scope of local variables 
+A local variable: a variable defined inside a method.  
+Scope: the part of the program where the variable can be referenced.  
+The scope of a local variable starts from its declaration and continues to the end of the block that contains the variable.  
+A local variable must be declared before it can be used.
+
+
+### Type casting 
+is the same as C.
+
+Implicit casting:
+```java
+double d=3; (type widening)
+```
+
+Explicit casting:
+```java
+int i = (int) 3.0; (type narrowing)
+int i = (int) 3.9; (Fraction part is truncated)
+```
+
+
+
+> Here is an exemple of type casting an the usage of a wrapper class. Static parse methods can be used for **converting Strings to other types** with the help of wrapper classes.
+```java
+public class Main {
+
+	public static void main(String[] args) {
+		
+		String input = JOptionPane.showInputDialog("double", "Enter a integer number");
+		
+        // casting string to double and then casting it integer again 
+		System.out.println("The last digit is the "+(int)(Double.parseDouble(input)%10));
+
+        // Other wrappers also have parse and the a lot of other methods. It is just an example
+    }
+}
+```
+
+
 
 ## Literals
 
@@ -33,7 +75,7 @@ Type casting is the same as C.
 | short | int | short x = 5; |
 | int | int | int x = 5;|
 | long | L or l | long x = 999999999L; |
-| float | F or f | float x = 3.14f | 
+| float | F or f | float x = 3.14f // float x=(float)3.14 type casting is also possible| 
 | double | D or d or nothing | double x = 3.141592; |
 | char | '' | char x = 'A'; |
 | boolean | true / false | boolean x = true;
@@ -87,6 +129,30 @@ to interprete: java First
 Arithmetic operators only can not be used with the boolean data type.  
 (It even can be used with char)
 
+> Note that, 
+> Do not use floating-point values for equality checking.  
+Since floating-point values are approximations for some values, using them could result inaccurate results.
+
+### Conversion rules
+1. If one of the operands is double, the other is converted into double
+2. OTHERWISE, if one of the operands is float, the other is converted into float
+3. OTHERWISE, if one of the operands is long, the other is converted into long
+4. OTHERWISE, both operands are converted into int.
+
+```
+double * something = double
+
+float * something but double = float
+
+long * something but double or float = long
+
+Otherwise => int
+
+
+```
+
+
+
 ## Increment / Decrement
 
 post++ post-- (use the value, then alter it)  
@@ -130,7 +196,8 @@ Only can not be used with the booleans.
 
 ## Bitwise Operators
 
-Only works with the integer type.
+Only works with the integer type.  
+It performs operations bit by bit.
 
 | Operator | Symbol | Example|
 |-----------|-----------------------|-|
@@ -140,7 +207,40 @@ Only works with the integer type.
 | LEFT SHIFT product with 2^theNumber| >> |
 | RIGHT SHIFT divide with 2^theNumber| << |
 | unsigned LEFT SHIFT | >>> |
-| NOT | ~ | x=10, y=~x --> y=-11
+| NOT | ~ | x=10, y=~x --> y=-11 ( flips each bit of its operand.)
+
+## Logical Operators
+
+Unlike bitwise operators.  
+Logical operators work with boolean operands, not bits.
+
+| Operator | Symbol | Example|
+|-----------|-----------------------|-|
+| AND | && |  | 
+| OR| // (Actually it is straight)| | |
+| XOR | ^  | |
+| NOT | ! | 
+
+> An interesting example of difference between logical and bitwise operators.
+```java
+public class Main {
+	public static void main(String[] args) {
+		
+		int x = 10;
+		int y = 20;
+		
+		// checks both of the conditions
+		if (x==10 & y==20) {
+			System.out.println("yes");
+		}
+		
+		// does not check the second condition if the first condition is false
+		if (x==10 && y==20) {
+			System.out.println("yes");
+		}
+	}
+}
+```
 
 
 # Printing
@@ -800,6 +900,72 @@ else {
 }
 ```
 
+If a method has to return a value and also includes a conditional statement,  
+then the "**else**" case in the condition has to be set in the method,  
+even all the conditions has been covered by else-if cases.
+
+>Example
+```
+Not correct, compile error occurs:
+
+static int sign(int n) {
+    if(n==0) {
+        return 0;
+    }
+    else if(n<0) {
+        return -1;
+    }
+    else if(n>0) {
+        return 1;
+    }
+}
+
+// Even all the cases are covered by else if statement(a number can be positive, negative or zero, not anything else)  
+// compiler thinks like there is a case (else case) haven't been covered but a return type (which is "int" in this case) is declared. 
+--> Compilation error
+```
+
+Here is the correct version:
+```java
+static int sign(int n) {
+    if(n==0) {
+        return 0;
+    }
+    else if(n<0) {
+        return -1;
+    }
+    else {
+        return 1;
+    }
+}
+```
+
+> Example --> Guessing number game with JOptionPane
+```java
+public class Main {	
+
+	public static void main(String[] args) {
+	int range = 1 + Integer.parseInt(JOptionPane.showInputDialog("Guessing range? :")); 
+	int response,guess,buttom = 0;
+	String[] options = {"Lower", "Higher", "Good Shot"};
+		do {
+			guess = (range -buttom)/2 + buttom;
+			response = JOptionPane.showOptionDialog(null, "Guess: "+guess+ "  buttom "+buttom + "  range "+ range, "Guessing Game",  JOptionPane.DEFAULT_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null,
+					options, options[0]);
+			if (response == 0) {
+				range = guess;
+			}
+			else if(response == 1){
+				buttom = guess;
+			}
+		}while(response != 2);
+	JOptionPane.showMessageDialog(null,"Good game!");
+	}
+}
+```
+
+
 ### switch-case
 
 #### Java supports:  
@@ -862,6 +1028,63 @@ for(int i=str.length()-1; i>=0; i--){
     }
 }
 ```
+
+> Example --> Monte Carlo Simulation (using random method)
+```java
+public class Main {	
+	public static void main(String[] args) {
+	final int NUMBER_OF_TRIALS = 100000000;
+	int numberOfHits = 0;
+	
+	for(int i=0; i<NUMBER_OF_TRIALS; i++){
+		double x = Math.random() * 2.0 - 1;
+		double y = Math.random() * 2.0 -1;
+		
+		if (x*x + y*y <= 1)
+			numberOfHits++;
+	}
+	
+	double pi = 4.0 * numberOfHits / NUMBER_OF_TRIALS;
+	System.out.println("Pi is : " + pi);
+	// output --> Pi is : 3.14147652
+	}
+}
+```
+
+
+> Example --> Graph of Sınus
+```java
+public class Main {	
+	public static void printStar(double number) {
+		int numberOfStars = (int) (number *10);
+		if(numberOfStars >= 0) {
+			System.out.print("          ");  // 10 blanks for the upper part
+		}else {
+			for (int i=0; i<(10 - Math.abs(numberOfStars)); i++)  // number of blanks for the lower part
+			System.out.print(" ");
+		}
+		for (int i=0; i<Math.abs(numberOfStars); i++)  // printing stars
+		System.out.print("*");
+
+	}
+
+	public static void main(String[] args) {
+		int f = 20;  // frequency
+		for(int der=0; der<360; der++) {
+			double sin = Math.sin(Math.toRadians(der*f));
+			printStar(sin);
+			System.out.println();
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+
+```
+
 
 To exit from the program:
 ```java
@@ -1124,7 +1347,9 @@ java.util.Arrays.sort(arr);
 
 # Methods
 ```
-returnType methodNAme(parameters)  // signiture/header/heading
+                 _________________________> method signature
+                |        |            |
+returnType methodNAme(parameterType parameter)  // header/heading
 {
     Body
 }
@@ -1165,6 +1390,50 @@ public class test1 {  // class which has the same name as the file
 
 Values of actual parameters will be copied inside formal parameters, and this formal paramaters will have just copies. (like call-by-value)  
 If any modifications are done to formal parameters, that will not affect actual parameters
+
+>Example --> incorrect result coused by pass-by-value
+```java
+public class Main {	
+	static void max(int num1, int num2, int max) {
+		if(num1>num2)
+			max=num1;
+		else
+			max=num2;
+	}
+
+	public static void main(String[] args) {
+		int max = 0;
+		int a=10, b=20;
+		max(a,b,max);
+		System.out.println(max);
+		// output --> 0
+		// not 20
+	}
+}
+```
+
+>Example --> pass-by-address can be achieved with the help of arrays
+```java
+public class Main {	
+	static void max(int arr[]) {
+		if(arr[1]>arr[2])
+			arr[0]=arr[1];
+		else
+			arr[0]=arr[2];
+	}
+
+	public static void main(String[] args) {
+		int max = 0;
+		int a=10, b=20;
+		int Array[] = {max, a, b};
+		max(Array);
+		System.out.println(max + " " + Array[0]);
+		// output --> 0 20
+	}
+}
+```
+
+
 
 2. Make an object of your class, then call the method via that object
 
@@ -1308,10 +1577,77 @@ Java allows to make methods with the same name  but
 1. Either data type (not return type, take care) of parameters should be different
 2. Or the number of parameters must be different
 
+In short, the signature of the methods has to be different  
+
 Only method name and the parameter list is checked, not the return type,  So  
 int method(int x, int y)  
 float method(int x, int y)  
 these are not allowed.
+
+### Ambiguous Invocation
+Sometimes, more than one method can match to the call cause of the possible type casting scenarios.
+>Example 
+```java
+public class Main {
+	
+	public static double max(int num1, double num2) { 
+	    if (num1 > num2)
+	      return num1;
+	    else
+	      return num2;
+	  }
+	  
+	  public static double max(double num1, int num2) {
+	    if (num1 > num2)
+	      return num1;
+	    else
+	      return num2;     
+	  }
+
+	
+	public static void main(String[] args) {
+		    System.out.println(max(1, 2));  
+		 
+	}
+    // Compilation error --> The method called which is max(int,double) is ambiguous.
+    // BOTH of the methods match.
+}
+```
+If there is a perfect match for the method called,  
+ambiguity is eliminated.
+```java
+public class Main {
+	
+	public static double max(int num1, double num2) { 
+	    if (num1 > num2)
+	      return num1;
+	    else
+	      return num2;
+	  }
+	  
+	  public static double max(double num1, int num2) {
+	    if (num1 > num2)
+	      return num1;
+	    else
+	      return num2;     
+	  }
+
+	  public static double max(int num1, int num2) {
+		    if (num1 > num2)
+		      return num1;
+		    else
+		      return num2;     
+		  }
+	
+	public static void main(String[] args) {
+		    System.out.println(max(1, 2));  
+		 
+	}
+    // No error
+    // Output 2.0
+}
+
+```
 
 
 ## Variable arguments (varargs)
