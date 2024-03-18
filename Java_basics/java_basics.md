@@ -836,6 +836,11 @@ strRemovedSpecials = str.replaceAll("[^a-zA-Z0-9]", ""); // it is also the same
 System.out.println(strRemovedSpecials);
 // aBc123
 
+// remove alphanumerics
+String str = "a!B@c#1$2%3";
+String onlySpecials = str.replaceAll("(?i)[a-z0-9]", ""); // (?i) for ignoring case sensivity inside regular expression
+System.out.println(onlySpecials);
+
 String str2 = "  ab   cd  fg  ";
     // remove extra spaces
 String str2RemovedSpaces = str2.trim().replaceAll("\\s+", " ");
@@ -1109,6 +1114,11 @@ length is also a property that an array has
 To access the length --> arrayName.length  
 (take care, it is not a method)
 
+When an array declared, its default values are set:  
+0 --> numeric primitive data type  
+'\u0000' --> char  
+false --> boolean  
+
 
 ## Creating an array
 ```java
@@ -1146,7 +1156,11 @@ E=new int[5];
 F=new int[5][5]; 
 
 int A[][]={{1,2,3,4},{2,4,6,8},{1,3,5,7}}; // initialising
+
+int[][] A = new int[]{{1,2,3,4},{2,4,6,8},{1,3,5,7}}; // another way of initialising
 ```
+
+
 
 #### Displaying
 for loop:
@@ -1186,6 +1200,18 @@ A is reference to the array of references
 So x will take values of not integer elements, it will take references to arrays of integers
 y takes the values of these integers
 ```
+
+```
+For Example:
+
+String[] words = new String[3]; // referanses created
+	
+    words[0] = new String("FirstWord"); // an object created
+
+String[] --> Creates reference
+String() --> Constructor, creates object
+```
+
 ## Jagged Array
 An array of arrays, but second arrays are not at the same lenght  
 Something like this:
@@ -1342,6 +1368,65 @@ str=str.toLowerCase(); // is also possible
 But most built in methods do this process automatically and does not return something, so we do not assign it again. For example:
 ```java
 java.util.Arrays.sort(arr);
+```
+There is a method for copying arrays btw:
+```
+arraycopy(sourceArray, src_pos, targetArray, tar_pos, length);
+
+Example:
+System.arraycopy(sourceArray, 0, targetArray, 0, sourceArray.length); 
+
+```
+
+# Arrays vs Array Lists
+
+...to be continued
+
+```java
+    // Create
+    String[] friendsArray = {"John", "Chris", "Eric", "Luke"};
+    //or
+    String[] friendsArray2 = new String[4];
+    
+    ArrayList<String> friendsArrayList =
+        new ArrayList<>(Arrays.asList("John", "Chris", "Eric", "Luke"));
+    //or
+    ArrayList<String> friendsArrayList2 = new ArrayList<>();
+    
+
+    //Get element
+    System.out.println(friendsArray[1]);
+    System.out.println(friendsArrayList.get(1));
+    
+
+    //Get size
+    System.out.println(friendsArray.length);
+    System.out.println(friendsArrayList.size());
+    
+
+    //Add an element
+    //You can't do this with Arrays :(
+    friendsArrayList.add("Mitch");
+    System.out.println(friendsArrayList.get(4));
+
+
+    //Set an element
+    friendsArray[0] = "Carl";
+    System.out.println(friendsArray[0]);
+    friendsArrayList.set(0, "Carl");
+    System.out.println(friendsArrayList.get(0));
+    
+
+    //Remove an element
+    // Can't do this with arrays :(
+    friendsArrayList.remove("Chris");
+    System.out.println(friendsArrayList.get(1));
+
+
+    //Print
+    //Doesn't work well for Arrays! Must loop through all elements instead.
+    System.out.println(friendsArray);
+    System.out.println(friendsArrayList);
 ```
 
 
