@@ -277,6 +277,9 @@ By default, even if constructor is not defined in the class, compiler creates a 
 
 Constructor can be defined in the class and also can be overloaded.
 
+If a parametarised constructor has been declared in the class, compiler does not create a no-parametere constructor.  
+Thus, "A a=new A()" declaretion is invalid if there are only parametarised constructors in the class.
+
 Constructor has to be same name as the class name. 
 
 It should not have a return type.

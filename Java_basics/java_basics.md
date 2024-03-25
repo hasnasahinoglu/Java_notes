@@ -20,7 +20,10 @@ String is the class name so the first letter is uppercase
 ```
 
 
-A variable should be initialised to be used it the code,  only declaring is not enough
+A variable should be initialised in some cases;  
+Dara fields in a class do not have to be initialized, their default values will be set  
+if they are not initialised.  
+But a local variable in a method has to be initialised manually.
 
 Variable name should start with alphabet or _ or $ 
 

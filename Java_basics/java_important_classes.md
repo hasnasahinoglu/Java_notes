@@ -92,3 +92,10 @@ sorting, copying, filling, searching...
     // output
     // [1, 2, 3, 4, 5]
 ```
+
+# Date
+
+# Random
+create an instance and then use the functions
+Random r=new Random();
+r.nextInt(int number); --> return a number between 0 and the number

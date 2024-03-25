@@ -8,7 +8,7 @@ These variables as not directly belongs to created objects, they are belong to c
 So it means, if this value being altered via one of the objects created from this class, it will affect all the objects from that class.  
 In this case, it can also be used as shared data. There will be only one copy of a static member, common for all the objects.
 
-Static members can be called by using directly class name. No need to create an object to access a data of class(static members)
+Static members can be called by using directly class name(static way). No need to create an object (no need to use instance way) to access a data of class(static members)
 
 Static members of a class are created inside method area, not in heap.
 
@@ -136,6 +136,9 @@ public class Main{
 
 ## Final
 It is like constant in C
+
+Sinca final variables can not be changed, it is advised that making them also static to reduce usage of memory.  
+(No need to create ten thousands of the same constant, make them static so there will be only one of them.)
 
 ### Final variables
 Values that can not be modified.
