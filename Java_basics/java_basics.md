@@ -21,13 +21,68 @@ String is the class name so the first letter is uppercase
 
 
 A variable should be initialised in some cases;  
-Dara fields in a class do not have to be initialized, their default values will be set  
+Data fields in a class do not have to be initialized, their default values will be set  
 if they are not initialised.  
 But a local variable in a method has to be initialised manually.
 
 Variable name should start with alphabet or _ or $ 
 
 camelCase is the common usage.
+
+## Wrapper Classes 
+All the primitives have their wrapper classes as well as their methods, constants etc.
+
+A primitive type value can be converted into a class type object.   
+Converting a primitive value to a wrapper object is called boxing. The reverse conversion is
+called unboxing.  
+Java automatically converts these into each other when its needed. This is called *autoboxing* and *autounboxing*
+
+Autoboxing → Integer x = 5;  
+Autounboxing → int y = new Integer(5);
+```java
+Integer[] intArray = {1, 2, 3};
+System.out.println(intArray[0] + intArray[1] + intArray[2]);
+
+/*
+In line 1, the primitive values 1,2, and 3 are automatically boxed 
+into objects 
+new Integer(1), new Integer(2), and new Integer(3). 
+In line 2, the objects 
+intArray[0], intArray[1], and intArray[2] 
+are automatically unboxed 
+into int values than added together.
+*/
+```
+
+Defining a primitive amd creating an object using wrappers are different:
+```java
+int x1 = 5;
+int x2 = 5;
+Integer x3 = 5;
+int x4 = new Integer(5);  //!??
+Integer x5 = new Integer(5);
+Integer x6 = new Integer("5");
+
+    // comparing references
+
+	System.out.println((x1==x2));  // true
+    System.out.println((x1==x3));  // true
+    System.out.println((x1==x3));  // true
+    System.out.println((x1==x4));  // true
+	System.out.println((x1==x5));  // true
+	System.out.println((x1==x6));  // true
+
+    System.out.println((x3==x4));  // true
+    System.out.println((x3==x5));  // false
+    System.out.println((x3==x6));  // false
+
+    System.out.println((x4==x5));  // true
+    System.out.println((x4==x6));  // true
+
+    System.out.println((x5==x6));  // false
+
+// Similar things also occurs with String class...
+```
 
 ### Scope of local variables 
 A local variable: a variable defined inside a method.  
@@ -861,6 +916,41 @@ System.out.println(words.length);
 // 3
 ```
 
+# String Builder Class
+Very strong class, similar to String but does not inherit from it.  
+
+```java
+    StringBuilder sb1=new StringBuilder("Hello ");
+
+    // concatenate
+    sb1.append("World");
+
+    // return the String value
+    System.out.println(sb1.toString());  // Hello World
+
+    // replace
+    sb1.replace(8, sb1.length(), "Java"); 
+
+    // reverse
+	System.out.println(sb1.reverse());  // avaJ olleH
+```
+
+> Example: Write a method: (Kata: Stop gninnipS My sdroW!)  
+Take a string, reverse the words that has 5+ letter  
+Return the new String  
+(using split - join)
+```java
+public String spinWords(String sentence) {
+    String[] words = sentence.split(" ");
+    for (int i=0; i<words.length; i++) {
+      if (words[i].length() >= 5) {
+        words[i] = new StringBuilder(words[i]).reverse().toString();
+      }
+    }
+    return String.join(" ",words);
+  }
+```
+
 
 # Conditions
 
@@ -1406,6 +1496,11 @@ System.arraycopy(sourceArray, 0, targetArray, 0, sourceArray.length);
     System.out.println(friendsArray.length);
     System.out.println(friendsArrayList.size());
     
+    // is Empty? (ArrayList only)
+    friendsArrayList.isEmpty(); // returns boolean
+
+    // clear (ArrayList only)
+    friendsArrayList.clear(); // new size will be zero
 
     //Add an element
     //You can't do this with Arrays :(

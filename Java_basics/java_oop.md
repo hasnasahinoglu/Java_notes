@@ -202,8 +202,8 @@ public class Test {
 Generally we do not want user to access and modify the data directly.  
 So we hide the data.  
 If we want user to set some properties,  then we use property methods:  
-getProperty();  
-setProperty();
+getProperty();  // getter - accessory  
+setProperty();  // setter - mutator  
 
 >Example --> class Rectangle
 ```java

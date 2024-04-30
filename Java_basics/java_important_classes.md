@@ -99,3 +99,63 @@ sorting, copying, filling, searching...
 create an instance and then use the functions
 Random r=new Random();
 r.nextInt(int number); --> return a number between 0 and the number
+
+# BigInteger
+If you need to compute with very large integers or high-precision floating-point values,  
+you can use the BigInteger and BigDecimal classes  
+in the java.math package.  
+Both are immutable.  
+You can use new BigInteger(String) and new BigDecimal(String) to create an instance of BigInteger and BigDecimal,  
+use the add, subtract, multiply, divide,
+and remainder METHODS (they can not be calculated directly) to perform arithmetic operations,  
+and use the compareTo method to compare  
+
+For example, the following code creates two BigInteger
+objects and multiplies them.
+BigInteger a = new BigInteger("9223372036854775807");
+BigInteger b = new BigInteger("2");
+BigInteger c = a.multiply(b); // 9223372036854775807 * 2
+
+
+> Example : Dynamic programming with BigIntegers  
+(simulating hexagons in a matrix)
+```java
+import java.math.BigInteger;
+import java.lang.Math;
+
+public class Kata {
+  
+public static BigInteger theBee(int n) {
+    // creating matrix
+        BigInteger[][] matrix = new BigInteger[2*n-1][2*n-1];
+        for(int i=0; i< matrix.length; i++){ 
+            for(int j=0; j<matrix[i].length; j++){
+                matrix[i][j] = BigInteger.ZERO;
+            }
+        }
+        
+    // Adding through the matrix (except the last row and last column)
+        matrix[0][0] = BigInteger.ONE;
+        for(int i=0; i< matrix.length-1; i++){
+            for(int j=0; j<matrix[i].length-1; j++){
+                if(Math.abs(i-j)>=n){
+                    matrix[i][j] = BigInteger.ZERO;
+                }
+                matrix[i][j+1] = matrix[i][j+1].add(matrix[i][j]);
+                matrix[i+1][j] = matrix[i+1][j].add(matrix[i][j]);
+                matrix[i+1][j+1] = matrix[i+1][j+1].add(matrix[i][j]);
+            }
+        }
+
+    // Adding the last layers
+        for(int k=n-1; k<2*n-2; k++){
+            matrix[2*n-2][k+1] = matrix[2*n-2][k+1].add(matrix[2*n-2][k]);
+            matrix[k+1][2*n-2] = matrix[k+1][2*n-2].add(matrix[k][2*n-2]);
+        }
+        
+    //return the last cell
+        return matrix[2*n-2][2*n-2];
+    }
+}
+
+```

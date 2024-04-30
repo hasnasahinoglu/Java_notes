@@ -76,6 +76,8 @@ non-sub class
 ```
 
 Private are only accessible only within the same class.
+Private data field can not be accessable from inside an another class, 
+even with creating an instance of that class and trying to access of that private data is not valid.
 
 Public are accessible from everywhere.
 

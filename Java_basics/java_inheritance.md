@@ -36,6 +36,14 @@ public class Main{
 }
 ```
 
+## Data Field in Inheritance
+Sub class has all the variables and all the methods that super class has.
+But it depends when it comes to access or alter them.  
+For example,
+Sub class has the variable of super class which is "private"
+But it CAN NOT ACCESS OR CHANGE IT DIRECTLY.
+Sub class can access this private data of super class only if there is a setter or some another methods which are not private.
+
 ## Constructors in Inheritance 
 #### What about the constructors?
 
@@ -74,6 +82,13 @@ public class Main{
     }
 }
 ```
+
+So each constructors has the super() call in their fisrt line -hidden-  
+
+Constructors also call an another constructor with this() call
+
+this() and super() can not be called in the same constructor
+
 
 ### Calling a parametrised constructor of super class
 
@@ -209,7 +224,7 @@ public class Main{
 ### super
 
 Just as "this" is a reference to the current object,  
-"super" is a referance to the super class(the properties that are comibg from the super class) 
+"super" is a referance to the super class(the properties that are coming from the super class) 
 To access to member of a super class, term "super" is used.
 
 this --> refers to all properties and methods that the current object has  
@@ -268,6 +283,11 @@ Redefining a method of superclass in subclass
 static of final methods can not be overriden  
 
 The method that overriden in the sub class should have same or more relax access specifier(private-protected-public) than the method in the super class
+
+Private methods can not be overridden  
+since the sub method can not access or change or see these private datas  
+although it has it through the inheritance.  
+An unaccessable or unseen can not be overridden.
 
 ```java
 class Super{
@@ -468,3 +488,170 @@ Can be achieved with both overloading and overriding
 overloading --> Used for compile-time polymorphism
 
 overriding --> Used for runtime polymorphis
+
+> Example: Polymorphic Cakes
+```java
+
+class Cake {
+    public void taste (Cake c) {
+        System.out.println("In taste of Cake class");
+    }
+}
+
+class ChocolateCake extends Cake {
+    public void taste(Cake c) {
+        System.out.println("In taste (Cake version) of ChocolateCake class");
+    }
+    public void taste(ChocolateCake cc) {
+        System.out.println("In taste (ChocolateCake version) of ChocolateCake class");
+    }
+}
+
+class BirthdayCake extends ChocolateCake {
+    public void taste(Cake c) {
+        System.out.println("In taste (Cake version) of BirthdayCake class");
+    }
+    public void taste (ChocolateCake cc) {
+        System.out.println("In taste (ChocolateCake version) of BirthdayCake class");
+    }
+    public void taste(BirthdayCake bc) {
+        System.out.println("In taste (BirthdayCake version) of BirthdayCake class");
+    }
+}
+
+public class Test05{
+	public static void main(String[] args) {
+		Cake c1 = new Cake();
+		Cake c2 = new ChocolateCake();
+		Cake c3 = new BirthdayCake();
+		
+		ChocolateCake cc1 = new ChocolateCake();
+		ChocolateCake cc2 = new BirthdayCake();
+		
+		BirthdayCake bc1 = new BirthdayCake();
+		
+		c1.taste(c1);
+		c1.taste(c2);
+		c1.taste(c3);
+		c1.taste(cc1);
+		c1.taste(cc2);
+		c1.taste(bc1);
+		
+		c2.taste(c1);
+		c2.taste(c2);
+		c2.taste(c3);
+		c2.taste(cc1);
+		c2.taste(cc2);
+		c2.taste(bc1);
+		
+		c3.taste(c1);
+		c3.taste(c2);
+		c3.taste(c3);
+		c3.taste(cc1);
+		c3.taste(cc2);
+		c3.taste(bc1);
+		
+		cc1.taste(c1);
+		cc1.taste(c2);
+		cc1.taste(c3);
+		cc1.taste(cc1);
+		cc1.taste(cc2);
+		cc1.taste(bc1);
+		
+		cc2.taste(c1);
+		cc2.taste(c2);
+		cc2.taste(c3);
+		cc2.taste(cc1);
+		cc2.taste(cc2);
+		cc2.taste(bc1);
+		
+		bc1.taste(c1);
+		bc1.taste(c2);
+		bc1.taste(c3);
+		bc1.taste(cc1);
+		bc1.taste(cc2);
+		bc1.taste(bc1);
+		
+// "Class of the object" decides which method will be called at the runtime
+// "Class of the reference -not the object-" will be taken as the parameter type -always-
+	}
+}
+
+```
+### Checking ancestry- (Actual) Class of the object 
+using ***instanceof***
+
+Referance of an object can be  
+from the same class as the object  
+or from one of the super classes of the object.
+
+#### Upcasting - Downcasting
+Use "instanceof"  
+To check the class of the object:
+```java
+class Ball{}
+
+class BasketballBall extends Ball{}
+class SoccerBall extends Ball{
+	void shoot() {System.out.print("Shoot... ");}
+}
+
+public class Test {
+	public static void main(String[] args) {
+
+		Object o=(Object)new Ball(); // Explicit casting
+		Object o2=new Ball(); // implicit casting
+		
+		Ball b = new Ball();
+		Ball bb = new BasketballBall(); // upcasting
+		Ball sb = new SoccerBall();   // upcasting
+		SoccerBall sb2 = (SoccerBall)sb;  // downcasting
+		// Every object can be upcasted,
+        // But not every object can be downcasted:
+        // Reference of the class can be casted into class of the object 
+
+		score(b);  // Score Up
+		score(bb);  // 3 point
+		score(sb);  // Goal
+
+        // This also works because SoccerBall is also a Ball
+		score(sb2);  // Goal
+	}
+	
+	static void score(Ball ball) {
+        // reference of the parameter object can be Ball 
+        // or descendants of Ball
+
+		if(ball instanceof BasketballBall) {
+			System.out.println("3 point");
+		}
+		else if(ball instanceof SoccerBall) {
+			((SoccerBall)ball).shoot(); // type casting for removing the compilation error
+			System.out.println("Goal");
+		}
+		else {
+			System.out.println("Score Up");
+		}
+	}
+}
+```
+> Example of Inheritance hierarchy
+```
+             ____> Orange     ____> McIntosh
+    Fruit --|                |
+            |____> Apple  ---|
+                             |____> GoldenDelicious
+
+Fruit product = new GoldenDelicious();
+Orange orange = new Orange();
+
+a. Is product instanceof Fruit? --> YES
+b. Is product instanceof Orange? --> NO
+c. Is product instanceof Apple? --> YES
+d. Is product instanceof GoldenDelicious? --> YES
+e. Is product instanceof McIntosh? --> NO
+f. Is orange instanceof Orange? --> YES
+g. Is orange instanceof Fruit? --> YES
+h. Is orange instanceof Apple? --> NO
+```
+
